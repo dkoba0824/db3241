@@ -64,24 +64,29 @@ public class MemberMenu {
         System.out.print("Enter member distance from warehouse (miles): ");
         int distance = Utilities.getIntInput();
 
-        Member m = new Member(id, firstName, lastName, type, phone, email, joinDate, address, distance);
-        
-        memberList.add(m);
-        System.out.println("Member added successfully!\n" + m);
+        // TODO: Replace with SQL
+        // Member m = new Member(id, firstName, lastName, type, phone, email, joinDate, address, distance);
+        // memberList.add(m);
+        // System.out.println("Member added successfully!\n" + m);
     }
 
     private static void viewMembers() {
         System.out.println("Viewing all members...");
-        if (memberList.isEmpty()) {
-            System.out.println("No members registered.");
-        } else {
-            for (Member m : memberList) {
-                System.out.println(m);
-            }
-        }
+        // TODO: Replace with SQL
+        // if (memberList.isEmpty()) {
+        //     System.out.println("No members registered.");
+        // } else {
+        //     for (Member m : memberList) {
+        //         System.out.println(m);
+        //     }
+        // }
     }
 
     private static void updateMember() {
+
+        // TODO: Replace with SQL
+
+
         System.out.println("Updating member information...");
         System.out.print("Enter member ID to update: ");
         int id = Utilities.getIntInput();
@@ -124,35 +129,38 @@ public class MemberMenu {
         System.out.println("Removing member...");
         System.out.print("Enter member ID to remove: ");
         int id = Utilities.getIntInput();
-        Member m = findMemberById(id);
 
-        if (m != null) {
-            memberList.remove(m);
-            System.out.println("Member removed successfully!");
-        } else {
-            System.out.println("Member not found.");
-        }
+        // TODO: Replace with SQL
+        // Member m = findMemberById(id);
+        // if (m != null) {
+        //     memberList.remove(m);
+        //     System.out.println("Member removed successfully!");
+        // } else {
+        //     System.out.println("Member not found.");
+        // }
     }
 
     private static void searchMember() {
         System.out.print("Enter member ID: ");
         int id = Utilities.getIntInput();
-        Member member = findMemberById(id);
 
-        if (member != null) {
-            System.out.println("\nMember Found!");
-            System.out.println(member);
-        } else {
-            System.out.println("No member found with that ID.");
-        }
+        // TODO: Replace with SQL
+        // Member member = findMemberById(id);
+        // if (member != null) {
+        //     System.out.println("\nMember Found!");
+        //     System.out.println(member);
+        // } else {
+        //     System.out.println("No member found with that ID.");
+        // }
     }
 
     private static Member findMemberById(int id) {
-        for (Member m : memberList) {
-            if (m.getId() == id) {
-                return m;
-            }
-        }
+        // TODO: Replace with SQL
+        // for (Member m : memberList) {
+        //     if (m.getId() == id) {
+        //         return m;
+        //     }
+        // }
         return null;
     }
 }

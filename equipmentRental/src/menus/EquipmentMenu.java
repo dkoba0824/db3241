@@ -65,24 +65,29 @@ public class EquipmentMenu {
         System.out.print("Enter equipment quantity: ");
         int quantity = Utilities.getIntInput();
 
-        Equipment eq = new Equipment(serialNumber, description, type, model, year, dimensions, weight, location, quantity, true);
-
-        equipmentList.add(eq);
-        System.out.println("Equipment added successfully!\n" + eq);
+        // TODO: Replace with SQL
+        // Equipment eq = new Equipment(serialNumber, description, type, model, year, dimensions, weight, location, quantity, true);
+        // equipmentList.add(eq);
+        // System.out.println("Equipment added successfully!\n" + eq);
     }
 
     private static void listEquipment() {
         System.out.println("Listing all equipment...");
-        if (equipmentList.isEmpty()) {
-            System.out.println("No equipment available.");
-        } else {
-            for (Equipment eq : equipmentList) {
-                System.out.println(eq);
-            }
-        }
+        // TODO: Replace with SQL
+        // if (equipmentList.isEmpty()) {
+        //     System.out.println("No equipment available.");
+        // } else {
+        //     for (Equipment eq : equipmentList) {
+        //         System.out.println(eq);
+        //     }
+        // }
     }
 
     private static void updateEquipment() {
+
+        // TODO: Replace with SQL
+
+
         System.out.println("Updating equipment...");
         System.out.print("Enter equipment serial number to update: ");
         int serial = Utilities.getIntInput();
@@ -125,14 +130,15 @@ public class EquipmentMenu {
         System.out.println("Removing equipment...");
         System.out.print("Enter serial number to remove: ");
         int id = Utilities.getIntInput();
-        Equipment eq = findEquipmentBySerial(id);
+        // TODO: Replace with SQL
+        // Equipment eq = findEquipmentBySerial(id);
 
-        if (eq != null) {
-            equipmentList.remove(eq);
-            System.out.println("Equipment removed successfully!");
-        } else {
-            System.out.println("Equipment not found.");
-        }
+        // if (eq != null) {
+        //     equipmentList.remove(eq);
+        //     System.out.println("Equipment removed successfully!");
+        // } else {
+        //     System.out.println("Equipment not found.");
+        // }
     }
 
     private static void searchEquipment() {
@@ -140,18 +146,18 @@ public class EquipmentMenu {
         int id = Utilities.getIntInput();
         Equipment eq = findEquipmentBySerial(id);
 
-        if (eq != null) {
-            System.out.println("\nEquipment Found!");
-            System.out.println(eq);
-        } else {
-            System.out.println("No equipment found with that serial number.");
-        }
+        // TODO: Replace with SQL
+        // if (eq != null) {
+        //     System.out.println("\nEquipment Found!");
+        //     System.out.println(eq);
+        // } else {
+        //     System.out.println("No equipment found with that serial number.");
+        // }
     }
 
     private static Equipment findEquipmentBySerial(int serial) {
 
         //Replace with SQL
-
         // for (Equipment eq : equipmentList) {
         //     if (eq.getSerialNumber() == serial){
         //         return eq;

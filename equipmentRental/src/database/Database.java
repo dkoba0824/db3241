@@ -31,4 +31,25 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    // Placeholders for other SQL methods
+    public static void addEquipmentPlaceholder() {
+        System.out.println("[DB Placeholder] Add equipment");
+    }
+
+    public static void updateEquipmentPlaceholder() {
+        System.out.println("[DB Placeholder] Update equipment");
+    }
+
+    public static void deleteEquipmentPlaceholder() {
+        System.out.println("[DB Placeholder] Delete equipment");
+    }
+
+    public static void searchEquipmentPlaceholder() {
+        System.out.println("[DB Placeholder] Search equipment");
+    }
+
+    public static void getAllEquipmentPlaceholder() {
+        System.out.println("[DB Placeholder] Get all equipment");
+    }
 }
