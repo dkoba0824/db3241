@@ -1,4 +1,4 @@
-package rentalSystem;
+package entities;
 
 public class Equipment {
     private int serialNumber;
