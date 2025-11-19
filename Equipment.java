@@ -1,49 +1,123 @@
 package rentalSystem;
 
 public class Equipment {
-    private int id;
-    private String name;
+    private int serialNumber;
+    private String description;
     private String type;
-    private boolean isAvailable;
+    private String model;
+    private int year;
+    private String dimensions;
+    private int weight;
+    private String location;
+    private int quantity;
+    private boolean status; // true if available, false if rented
 
-    public Equipment(int id, String name, String type) {
-        this.id = id;
-        this.name = name;
+    public Equipment(int serialNumber, String description, String type, String model,
+                     int year, String dimensions, int weight, String location,
+                     int quantity, boolean status) {
+        this.serialNumber = serialNumber;
+        this.description = description;
         this.type = type;
-        this.isAvailable = true;
+        this.model = model;
+        this.year = year;
+        this.dimensions = dimensions;
+        this.weight = weight;
+        this.location = location;
+        this.quantity = quantity;
+        this.status = status;
     }
 
-    public int getId() {
-        return this.id;
+    // Getter Methods
+
+    public int getSerialNumber() {
+        return serialNumber;
     }
 
-    public String getName() {
-        return this.name;
+    public String getDescription() {
+        return description;
     }
 
     public String getType() {
-        return this.type;
+        return type;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public boolean isAvailable() {
-        return this.isAvailable;
+        return status;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    // Setter Methods
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public void setAvailable(boolean available) {
-        this.isAvailable = available;
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setDimensions(String dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Equipment ID: " + this.id + ", Name: " + this.name + ", Type: "
-                + this.type + ", Available: " + (this.isAvailable ? "Yes" : "No");
+        return "\nEquipment ID: " + serialNumber +
+               "\nDescription: " + description +
+               "\nType: " + type +
+               "\nModel: " + model +
+               "\nYear: " + year +
+               "\nDimensions: " + dimensions +
+               "\nWeight: " + weight + " lbs" +
+               "\nLocation: " + location +
+               "\nQuantity: " + quantity +
+               "\nActive: " + (status ? "Yes" : "No");
     }
 }
