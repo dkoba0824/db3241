@@ -10,6 +10,10 @@ public class Main {
 
 // Main Menu
     public static void main(String[] args) {
+        
+        //Connect to DB
+        Database.testConnection();
+
         int choice;
 
         do {
