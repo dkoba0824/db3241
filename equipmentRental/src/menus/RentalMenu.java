@@ -1,5 +1,7 @@
 package menus;
 
+import database.RentalDAO;
+import database.DroneDAO;
 import utilities.Utilities;
 
 import java.util.Scanner;
@@ -35,17 +37,14 @@ public class RentalMenu {
     private static void rentEquipment() {
         System.out.println("\nRenting Equipment...");
 
-
         System.out.print("Enter Member ID: ");
         int memberId = Utilities.getIntInput();
         System.out.print("Enter Equipment Serial Number: ");
         int serial = Utilities.getIntInput();
-        System.out.print("Enter rental start date (YYYY-MM-DD): ");
-        String startDate = scanner.nextLine();
-        System.out.print("Enter expected return date (YYYY-MM-DD): ");
-        String endDate = scanner.nextLine();
+        System.out.print("Enter due date (YYYY-MM-DD): ");
+        String dueDate = scanner.nextLine();
 
-        System.out.println("Equipment rented successfully!");
+        RentalDAO.rentEquipment(memberId, serial, dueDate);
     }
 
     private static void returnEquipment() {
@@ -55,39 +54,39 @@ public class RentalMenu {
         int memberId = Utilities.getIntInput();
         System.out.print("Enter Equipment Serial Number: ");
         int serial = Utilities.getIntInput();
-        System.out.print("Enter return date (YYYY-MM-DD): ");
-        String endDate = scanner.nextLine();
 
-        System.out.println("Equipment returned successfully!");
+        RentalDAO.returnEquipment(memberId, serial);
     }
 
     private static void deliverEquipment() {
         System.out.println("\nScheduling Equipment Delivery...");
+        
+        // Show available drones
+        DroneDAO.displayAvailableDrones();
 
-        System.out.print("Enter Member ID: ");
+        System.out.print("\nEnter Member ID: ");
         int memberId = Utilities.getIntInput();
         System.out.print("Enter Equipment Serial Number: ");
         int serial = Utilities.getIntInput();
         System.out.print("Enter Drone ID to assign: ");
         int droneId = Utilities.getIntInput();
-        System.out.print("Enter delivery date (YYYY-MM-DD): ");
-        String date = scanner.nextLine();
 
-        System.out.println("Equipment delivered successfully!");
+        DroneDAO.scheduleDelivery(memberId, serial, droneId);
     }
 
     private static void pickupEquipment() {
         System.out.println("\nScheduling Equipment Pickup...");
+        
+        // Show available drones
+        DroneDAO.displayAvailableDrones();
 
-        System.out.print("Enter Member ID: ");
+        System.out.print("\nEnter Member ID: ");
         int memberId = Utilities.getIntInput();
         System.out.print("Enter Equipment Serial Number: ");
         int serial = Utilities.getIntInput();
         System.out.print("Enter Drone ID to assign: ");
         int droneId = Utilities.getIntInput();
-        System.out.print("Enter pickup date (YYYY-MM-DD): ");
-        String date = scanner.nextLine();
 
-        System.out.println("Equipment returned successfully!");
+        DroneDAO.schedulePickup(memberId, serial, droneId);
     }
 }
