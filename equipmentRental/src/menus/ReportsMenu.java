@@ -1,8 +1,7 @@
 package menus;
 
-import database.ReportsDAO;
+import database.Database;
 import utilities.Utilities;
-
 import java.util.Scanner;
 
 public class ReportsMenu {
@@ -27,10 +26,10 @@ public class ReportsMenu {
 
             switch (choice) {
                 case 1 -> reportRentingCheckouts();
-                case 2 -> ReportsDAO.reportMostPopularItem();
-                case 3 -> ReportsDAO.reportMostPopularManufacturer();
-                case 4 -> ReportsDAO.reportMostPopularDrone();
-                case 5 -> ReportsDAO.reportMemberWithMostRentals();
+                case 2 -> reportMostPopularItem();
+                case 3 -> reportMostPopularManufacturer();
+                case 4 -> reportMostPopularDrone();
+                case 5 -> reportMemberWithMostRentals();
                 case 6 -> reportEquipmentByType();
                 case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice.");
@@ -42,7 +41,32 @@ public class ReportsMenu {
     private static void reportRentingCheckouts() {
         System.out.print("Enter Member ID: ");
         int memberId = Utilities.getIntInput();
-        ReportsDAO.reportRentingCheckouts(memberId);
+        String sql = "SELECT COUNT(*) AS Total_Rented FROM Rental WHERE User_ID = ?";
+        Database.runQuery(sql, memberId);
+    }
+    
+    private static void reportMostPopularItem() {
+        System.out.println("Most Popular Item:");
+        String sql = "SELECT E.SerialNo, E.Model, COUNT(R.SerialNo) AS Total_Rented FROM EQUIPMENT E JOIN Rental R ON E.SerialNo = R.SerialNo GROUP BY E.SerialNo ORDER BY Total_Rented DESC LIMIT 1";
+        Database.runQuery(sql);
+    }
+    
+    private static void reportMostPopularManufacturer() {
+        System.out.println("Most Popular Manufacturer:");
+        String sql = "SELECT M.Name, COUNT(R.SerialNo) AS Total_Rented FROM Manufacturer M JOIN EQUIPMENT E ON M.M_ID = E.M_ID JOIN Rental R ON E.SerialNo = R.SerialNo GROUP BY M.M_ID ORDER BY Total_Rented DESC LIMIT 1";
+        Database.runQuery(sql);
+    }
+    
+    private static void reportMostPopularDrone() {
+        System.out.println("Most Popular Drone:");
+        String sql = "SELECT D.SerialNo, D.Name, COUNT(DD.D_Serial) AS Total_Deliveries FROM Drones D JOIN Drone_Delivers DD ON D.SerialNo = DD.D_Serial GROUP BY D.SerialNo ORDER BY Total_Deliveries DESC LIMIT 1";
+        Database.runQuery(sql);
+    }
+    
+    private static void reportMemberWithMostRentals() {
+        System.out.println("Member with Most Rentals:");
+        String sql = "SELECT User_ID, COUNT(SerialNo) AS Rental_Amount FROM Rental GROUP BY User_ID ORDER BY Rental_Amount DESC LIMIT 1";
+        Database.runQuery(sql);
     }
     
     private static void reportEquipmentByType() {
@@ -50,6 +74,7 @@ public class ReportsMenu {
         String type = scanner.nextLine();
         System.out.print("Enter year (show equipment released before this year): ");
         int year = Utilities.getIntInput();
-        ReportsDAO.reportEquipmentByTypeAndYear(type, year);
+        String sql = "SELECT Descrip FROM EQUIPMENT WHERE Type = ? AND Year < ?";
+        Database.runQuery(sql, type, year);
     }
 }

@@ -1,10 +1,7 @@
 package menus;
 
-import database.EquipmentDAO;
-import entities.Equipment;
+import database.Database;
 import utilities.Utilities;
-
-import java.util.List;
 import java.util.Scanner;
 
 public class EquipmentMenu {
@@ -43,12 +40,6 @@ public class EquipmentMenu {
         System.out.print("Enter equipment serial number: ");
         int serialNumber = Utilities.getIntInput();
 
-        //Check for duplicate serial number
-        if (EquipmentDAO.findBySerialNumber(serialNumber) != null) {
-            System.out.println("Equipment with this serial number already exists!");
-            return;
-        }
-
         System.out.print("Enter equipment description: ");
         String description = scanner.nextLine();
         System.out.print("Enter equipment type: ");
@@ -65,19 +56,18 @@ public class EquipmentMenu {
         String location = scanner.nextLine();        
         System.out.print("Enter equipment quantity: ");
         int quantity = Utilities.getIntInput();
-        System.out.print("Enter manufacturer ID (e.g., M000001): ");
+        System.out.print("Enter manufacturer ID (e.g., MFG001): ");
         String manufacturerId = scanner.nextLine();
         System.out.print("Enter order number: ");
         String orderNumber = scanner.nextLine();
         System.out.print("Enter warranty expiration date (YYYY-MM-DD): ");
         String warrantyExp = scanner.nextLine();
 
-        Equipment eq = new Equipment(serialNumber, description, type, model, year, dimensions, 
-                                     weight, location, quantity, true, manufacturerId, 
-                                     orderNumber, warrantyExp);
+        String sql = "INSERT INTO EQUIPMENT (SerialNo, Model, Quantity, Weight, Location, Status, Descrip, Dimensions, Year, Type, M_ID, OrderNo, Warranty_Exp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int rows = Database.executeUpdate(sql, String.format("EQ%05d", serialNumber), model, quantity, weight, location, "Available", description, dimensions, year, type, manufacturerId, orderNumber, warrantyExp);
         
-        if (EquipmentDAO.addEquipment(eq)) {
-            System.out.println("Equipment added successfully!\n" + eq);
+        if (rows > 0) {
+            System.out.println("Equipment added successfully!");
         } else {
             System.out.println("Failed to add equipment.");
         }
@@ -85,57 +75,39 @@ public class EquipmentMenu {
 
     private static void listEquipment() {
         System.out.println("Listing all equipment...");
-        List<Equipment> equipmentList = EquipmentDAO.getAllEquipment();
-        
-        if (equipmentList.isEmpty()) {
-            System.out.println("No equipment available.");
-        } else {
-            for (Equipment eq : equipmentList) {
-                System.out.println(eq);
-            }
-        }
+        String sql = "SELECT * FROM EQUIPMENT ORDER BY CAST(SUBSTR(SerialNo, 3) AS INTEGER)";
+        Database.runQuery(sql);
     }
 
     private static void updateEquipment() {
         System.out.println("Updating equipment...");
         System.out.print("Enter equipment serial number to update: ");
         int serial = Utilities.getIntInput();
-        Equipment eq = EquipmentDAO.findBySerialNumber(serial);
 
-        if (eq != null) {
-            System.out.print("Enter updated equipment description: ");
-            String description = scanner.nextLine();
-            System.out.print("Enter updated equipment type: ");
-            String type = scanner.nextLine();
-            System.out.print("Enter updated equipment model: ");
-            String model = scanner.nextLine();
-            System.out.print("Enter updated equipment year: ");
-            int year = Utilities.getIntInput();
-            System.out.print("Enter updated equipment dimensions (ex: 10x20x30 in): ");
-            String dimensions = scanner.nextLine();
-            System.out.print("Enter updated equipment weight (in lbs): ");
-            int weight = Utilities.getIntInput();
-            System.out.print("Enter updated equipment warehouse location: ");
-            String location = scanner.nextLine();        
-            System.out.print("Enter updated equipment quantity: ");
-            int quantity = Utilities.getIntInput();
+        System.out.print("Enter updated equipment description: ");
+        String description = scanner.nextLine();
+        System.out.print("Enter updated equipment type: ");
+        String type = scanner.nextLine();
+        System.out.print("Enter updated equipment model: ");
+        String model = scanner.nextLine();
+        System.out.print("Enter updated equipment year: ");
+        int year = Utilities.getIntInput();
+        System.out.print("Enter updated equipment dimensions (ex: 10x20x30 in): ");
+        String dimensions = scanner.nextLine();
+        System.out.print("Enter updated equipment weight (in lbs): ");
+        int weight = Utilities.getIntInput();
+        System.out.print("Enter updated equipment warehouse location: ");
+        String location = scanner.nextLine();        
+        System.out.print("Enter updated equipment quantity: ");
+        int quantity = Utilities.getIntInput();
 
-            eq.setDescription(description);
-            eq.setType(type);
-            eq.setModel(model);
-            eq.setYear(year);
-            eq.setDimensions(dimensions);
-            eq.setWeight(weight);
-            eq.setLocation(location);
-            eq.setQuantity(quantity);
-
-            if (EquipmentDAO.updateEquipment(eq)) {
-                System.out.println("Equipment ID " + serial + " updated successfully!");
-            } else {
-                System.out.println("Failed to update equipment.");
-            }
+        String sql = "UPDATE EQUIPMENT SET Descrip = ?, Type = ?, Model = ?, Year = ?, Dimensions = ?, Weight = ?, Location = ?, Quantity = ? WHERE SerialNo = ?";
+        int rows = Database.executeUpdate(sql, description, type, model, year, dimensions, weight, location, quantity, String.format("EQ%05d", serial));
+        
+        if (rows > 0) {
+            System.out.println("Equipment ID " + serial + " updated successfully!");
         } else {
-            System.out.println("Equipment not found.");
+            System.out.println("Equipment not found or failed to update.");
         }
     }
 
@@ -144,13 +116,11 @@ public class EquipmentMenu {
         System.out.print("Enter serial number to remove: ");
         int id = Utilities.getIntInput();
         
-        Equipment eq = EquipmentDAO.findBySerialNumber(id);
-        if (eq != null) {
-            if (EquipmentDAO.deleteEquipment(id)) {
-                System.out.println("Equipment removed successfully!");
-            } else {
-                System.out.println("Failed to remove equipment.");
-            }
+        String sql = "DELETE FROM EQUIPMENT WHERE SerialNo = ?";
+        int rows = Database.executeUpdate(sql, String.format("EQ%05d", id));
+        
+        if (rows > 0) {
+            System.out.println("Equipment removed successfully!");
         } else {
             System.out.println("Equipment not found.");
         }
@@ -159,14 +129,9 @@ public class EquipmentMenu {
     private static void searchEquipment() {
         System.out.print("Enter equipment serial number: ");
         int id = Utilities.getIntInput();
-        Equipment eq = EquipmentDAO.findBySerialNumber(id);
-
-        if (eq != null) {
-            System.out.println("\nEquipment Found!");
-            System.out.println(eq);
-        } else {
-            System.out.println("No equipment found with that serial number.");
-        }
+        
+        String sql = "SELECT * FROM EQUIPMENT WHERE SerialNo = ?";
+        Database.runQuery(sql, String.format("EQ%05d", id));
     }
 
 }

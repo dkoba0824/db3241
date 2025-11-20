@@ -1,0 +1,20 @@
+# Compiled class files
+*.class
+bin/
+
+# Test files
+src/TestDB.java
+src/CheckEquipment.java
+src/CheckPath.java
+src/ShowDroneSchema.java
+src/ShowSchema.java
+src/Main.class
+
+# IDE files
+.vscode/
+.settings/
+.classpath
+.project
+
+# Database changes
+nonprofitorg.db

@@ -1,8 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.io.File;
 
 public class Database {
@@ -63,24 +61,84 @@ public class Database {
         }
     }
 
-    // Placeholders for other SQL methods
-    public static void addEquipmentPlaceholder() {
-        System.out.println("[DB Placeholder] Add equipment");
+    // Run a simple SQL query and print results
+    public static void runQuery(String sql) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            // Print column names
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(rsmd.getColumnName(i));
+                if (i < columnCount) System.out.print(",  ");
+            }
+            System.out.println();
+
+            // Print rows
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(rs.getString(i));
+                    if (i < columnCount) System.out.print(",  ");
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.out.println("Query error: " + e.getMessage());
+        }
     }
 
-    public static void updateEquipmentPlaceholder() {
-        System.out.println("[DB Placeholder] Update equipment");
+    // Run query with parameters
+    public static void runQuery(String sql, Object... params) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            // Set parameters
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            // Print column names
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(rsmd.getColumnName(i));
+                if (i < columnCount) System.out.print(",  ");
+            }
+            System.out.println();
+
+            // Print rows
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(rs.getString(i));
+                    if (i < columnCount) System.out.print(",  ");
+                }
+                System.out.println();
+            }
+            
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Query error: " + e.getMessage());
+        }
     }
 
-    public static void deleteEquipmentPlaceholder() {
-        System.out.println("[DB Placeholder] Delete equipment");
-    }
+    // Execute update/insert/delete statements
+    public static int executeUpdate(String sql, Object... params) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
 
-    public static void searchEquipmentPlaceholder() {
-        System.out.println("[DB Placeholder] Search equipment");
-    }
-
-    public static void getAllEquipmentPlaceholder() {
-        System.out.println("[DB Placeholder] Get all equipment");
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Update error: " + e.getMessage());
+            return 0;
+        }
     }
 }
