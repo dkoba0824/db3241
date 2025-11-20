@@ -10,7 +10,7 @@ public class RentalMenu {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    // Rental and Delivery Options Menu (NOTE: Functionality limited for Checkpoint 2, produces warnings)
+    // Rental and Delivery Options Menu
     public static void rentalMenu() {
         int choice;
         do {
