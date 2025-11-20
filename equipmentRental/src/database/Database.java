@@ -1,13 +1,13 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
     private static final String DB_URL = "jdbc:sqlite:nonprofitorg.db";
+    private static PreparedStatement ps;
 
     // Returns DB connection for queries
     public static Connection getConnection() {
@@ -32,6 +32,91 @@ public class Database {
         }
     }
 
+    // Method to run queries using a prepared statement
+     public static void sqlQuery(Connection conn, PreparedStatement ps) {
+        try {
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            // Print column names
+            for (int i = 1; i <= columnCount; i++) {
+                String value = rsmd.getColumnName(i);
+                System.out.print(value);
+                if (i < columnCount) System.out.print(",  ");
+            }
+            System.out.print("\n");
+
+            // Print rows
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnValue = rs.getString(i);
+                    System.out.print(columnValue);
+                    if (i < columnCount) System.out.print(",  ");
+                }
+                System.out.print("\n");
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // SQL query with no parameters (pass query as string)
+    public static void runQuery(String sql) {
+        try (Connection conn = getConnection()) {
+            ps = conn.prepareStatement(sql);
+            sqlQuery(conn, ps);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Queries that have additional parameters
+    public static void psTotalItemsRented(String memberId) {
+        String sql = "SQL CODE HERE";
+
+        try (Connection conn = getConnection()) {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, memberId);
+            sqlQuery(conn, ps);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void psEquipmentByTypeBeforeYear(String type, int year) {
+        String sql = "SQL CODE HERE";
+
+        try (Connection conn = getConnection()) {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, type);
+            ps.setInt(2, year);
+            sqlQuery(conn, ps);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //IMPT: Other methods can call runQuery directly
+    
+    public static void runQuery(String sql, Object... params) {
+        try (Connection conn = getConnection()) {
+            ps = conn.prepareStatement(sql);
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+
+            sqlQuery(conn, ps);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     // Placeholders for other SQL methods
     public static void addEquipmentPlaceholder() {
         System.out.println("[DB Placeholder] Add equipment");
@@ -52,4 +137,6 @@ public class Database {
     public static void getAllEquipmentPlaceholder() {
         System.out.println("[DB Placeholder] Get all equipment");
     }
+
+
 }
