@@ -11,10 +11,14 @@ public class Equipment {
     private String location;
     private int quantity;
     private boolean status; // true if available, false if rented
+    private String manufacturerId;
+    private String orderNumber;
+    private String warrantyExp;
 
     public Equipment(int serialNumber, String description, String type, String model,
                      int year, String dimensions, int weight, String location,
-                     int quantity, boolean status) {
+                     int quantity, boolean status,   String manufacturerId, 
+                     String orderNumber, String warrantyExp) {
         this.serialNumber = serialNumber;
         this.description = description;
         this.type = type;
@@ -25,6 +29,9 @@ public class Equipment {
         this.location = location;
         this.quantity = quantity;
         this.status = status;
+        this.manufacturerId = manufacturerId;
+        this.orderNumber = orderNumber;
+        this.warrantyExp = warrantyExp;
     }
 
     // Getter Methods
@@ -69,6 +76,18 @@ public class Equipment {
         return status;
     }
 
+    public String getManufacturerId() {
+        return manufacturerId;
+    
+    }
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public String getWarrantyExp() {
+        return warrantyExp;
+    }
+
     // Setter Methods
 
     public void setDescription(String description) {
@@ -107,6 +126,18 @@ public class Equipment {
         this.status = status;
     }
 
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public void setWarrantyExp(String warrantyExp) {
+        this.warrantyExp = warrantyExp;
+    }
+
     @Override
     public String toString() {
         return "\nEquipment ID: " + serialNumber +
@@ -118,6 +149,9 @@ public class Equipment {
                "\nWeight: " + weight + " lbs" +
                "\nLocation: " + location +
                "\nQuantity: " + quantity +
-               "\nActive: " + (status ? "Yes" : "No");
+               "\nActive: " + (status ? "Yes" : "No") + 
+               "\nManufacturer ID: " + manufacturerId +
+               "\nOrder Number: " + orderNumber +
+               "\nWarranty Exp: " + warrantyExp;
     }
 }
