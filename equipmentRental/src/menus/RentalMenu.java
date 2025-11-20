@@ -1,9 +1,7 @@
 package menus;
 
-import database.RentalDAO;
-import database.DroneDAO;
+import database.Database;
 import utilities.Utilities;
-
 import java.util.Scanner;
 
 public class RentalMenu {
@@ -44,7 +42,14 @@ public class RentalMenu {
         System.out.print("Enter due date (YYYY-MM-DD): ");
         String dueDate = scanner.nextLine();
 
-        RentalDAO.rentEquipment(memberId, serial, dueDate);
+        String sql = "INSERT INTO Rental (User_ID, SerialNo, Date_Rented, Date_Due) VALUES (?, ?, date('now'), ?)";
+        int rows = Database.executeUpdate(sql, memberId, String.format("EQ%05d", serial), dueDate);
+        
+        if (rows > 0) {
+            System.out.println("Equipment rented successfully!");
+        } else {
+            System.out.println("Failed to rent equipment.");
+        }
     }
 
     private static void returnEquipment() {
@@ -55,14 +60,23 @@ public class RentalMenu {
         System.out.print("Enter Equipment Serial Number: ");
         int serial = Utilities.getIntInput();
 
-        RentalDAO.returnEquipment(memberId, serial);
+        String sql = "UPDATE Rental SET Date_Returned = date('now') WHERE User_ID = ? AND SerialNo = ? AND Date_Returned IS NULL";
+        int rows = Database.executeUpdate(sql, memberId, String.format("EQ%05d", serial));
+        
+        if (rows > 0) {
+            System.out.println("Equipment returned successfully!");
+        } else {
+            System.out.println("Rental not found or already returned.");
+        }
     }
 
     private static void deliverEquipment() {
         System.out.println("\nScheduling Equipment Delivery...");
         
         // Show available drones
-        DroneDAO.displayAvailableDrones();
+        System.out.println("\nAvailable Drones:");
+        String droneSql = "SELECT * FROM Drones";
+        Database.runQuery(droneSql);
 
         System.out.print("\nEnter Member ID: ");
         int memberId = Utilities.getIntInput();
@@ -71,14 +85,23 @@ public class RentalMenu {
         System.out.print("Enter Drone ID to assign: ");
         int droneId = Utilities.getIntInput();
 
-        DroneDAO.scheduleDelivery(memberId, serial, droneId);
+        String sql = "INSERT INTO Drone_Delivers (D_Serial, SerialNo, User_ID, Delivery_Date) VALUES (?, ?, ?, date('now'))";
+        int rows = Database.executeUpdate(sql, droneId, String.format("EQ%05d", serial), memberId);
+        
+        if (rows > 0) {
+            System.out.println("Delivery scheduled successfully!");
+        } else {
+            System.out.println("Failed to schedule delivery.");
+        }
     }
 
     private static void pickupEquipment() {
         System.out.println("\nScheduling Equipment Pickup...");
         
         // Show available drones
-        DroneDAO.displayAvailableDrones();
+        System.out.println("\nAvailable Drones:");
+        String droneSql = "SELECT * FROM Drones";
+        Database.runQuery(droneSql);
 
         System.out.print("\nEnter Member ID: ");
         int memberId = Utilities.getIntInput();
@@ -87,6 +110,13 @@ public class RentalMenu {
         System.out.print("Enter Drone ID to assign: ");
         int droneId = Utilities.getIntInput();
 
-        DroneDAO.schedulePickup(memberId, serial, droneId);
+        String sql = "INSERT INTO Drone_Delivers (D_Serial, SerialNo, User_ID, Pickup_Date) VALUES (?, ?, ?, date('now'))";
+        int rows = Database.executeUpdate(sql, droneId, String.format("EQ%05d", serial), memberId);
+        
+        if (rows > 0) {
+            System.out.println("Pickup scheduled successfully!");
+        } else {
+            System.out.println("Failed to schedule pickup.");
+        }
     }
 }
