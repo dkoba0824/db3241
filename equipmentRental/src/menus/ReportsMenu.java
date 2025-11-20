@@ -1,12 +1,15 @@
 package menus;
 
+import database.ReportsDAO;
 import utilities.Utilities;
 
 import java.util.Scanner;
 
 public class ReportsMenu {
+    
+    private static final Scanner scanner = new Scanner(System.in);
 
-    // Reports Menu will be implemented here in future checkpoint
+    // Reports Menu
     public static void reportsMenu() {
         int choice;
         do {
@@ -23,16 +26,30 @@ public class ReportsMenu {
             choice = Utilities.getIntInput();
 
             switch (choice) {
-                case 1 -> System.out.println("[Report] Total items rented.");
-                case 2 -> System.out.println("[Report] Most popular item.");
-                case 3 -> System.out.println("[Report] Most popular manufacturer.");
-                case 4 -> System.out.println("[Report] Most used drone.");
-                case 5 -> System.out.println("[Report] Member with most checkouts.");
-                case 6 -> System.out.println("[Report] Equipment by type before year.");
+                case 1 -> reportRentingCheckouts();
+                case 2 -> ReportsDAO.reportMostPopularItem();
+                case 3 -> ReportsDAO.reportMostPopularManufacturer();
+                case 4 -> ReportsDAO.reportMostPopularDrone();
+                case 5 -> ReportsDAO.reportMemberWithMostRentals();
+                case 6 -> reportEquipmentByType();
                 case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice.");
             }
 
         } while (choice != 0);
+    }
+    
+    private static void reportRentingCheckouts() {
+        System.out.print("Enter Member ID: ");
+        int memberId = Utilities.getIntInput();
+        ReportsDAO.reportRentingCheckouts(memberId);
+    }
+    
+    private static void reportEquipmentByType() {
+        System.out.print("Enter equipment type: ");
+        String type = scanner.nextLine();
+        System.out.print("Enter year (show equipment released before this year): ");
+        int year = Utilities.getIntInput();
+        ReportsDAO.reportEquipmentByTypeAndYear(type, year);
     }
 }
