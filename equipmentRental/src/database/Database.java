@@ -75,9 +75,7 @@ public class Database {
     }
 
     // Queries that have additional parameters
-    public static void psTotalItemsRented(String memberId) {
-        String sql = "SQL CODE HERE";
-
+    public static void psTotalItemsRented(String sql, String memberId) {
         try (Connection conn = getConnection()) {
             ps = conn.prepareStatement(sql);
             ps.setString(1, memberId);
@@ -87,9 +85,7 @@ public class Database {
         }
     }
 
-    public static void psEquipmentByTypeBeforeYear(String type, int year) {
-        String sql = "SQL CODE HERE";
-
+    public static void psEquipmentByTypeBeforeYear(String sql, String type, int year) {
         try (Connection conn = getConnection()) {
             ps = conn.prepareStatement(sql);
             ps.setString(1, type);
