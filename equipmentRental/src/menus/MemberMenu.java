@@ -3,11 +3,16 @@ package menus;
 import entities.Member;
 import utilities.Utilities;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MemberMenu {
 
     private static final Scanner scanner = new Scanner(System.in);
+
+    // Local array (Checkpoint 2 functionality)
+    // THIS WILL BE REPLACED WITH SQL IN FUTURE CHECKPOINTS
+    private static ArrayList<Member> memberList = new ArrayList<>();
 
     // Member Menu
     public static void memberMenu() {
@@ -64,28 +69,23 @@ public class MemberMenu {
         System.out.print("Enter member distance from warehouse (miles): ");
         int distance = Utilities.getIntInput();
 
-        // TODO: Replace with SQL
-        // Member m = new Member(id, firstName, lastName, type, phone, email, joinDate, address, distance);
-        // memberList.add(m);
-        // System.out.println("Member added successfully!\n" + m);
+        Member m = new Member(id, firstName, lastName, type, phone, email, joinDate, address, distance);
+        memberList.add(m);
+        System.out.println("Member added successfully!\n" + m);
     }
 
     private static void viewMembers() {
         System.out.println("Viewing all members...");
-        // TODO: Replace with SQL
-        // if (memberList.isEmpty()) {
-        //     System.out.println("No members registered.");
-        // } else {
-        //     for (Member m : memberList) {
-        //         System.out.println(m);
-        //     }
-        // }
+        if (memberList.isEmpty()) {
+            System.out.println("No members registered.");
+        } else {
+            for (Member m : memberList) {
+                System.out.println(m);
+            }
+        }
     }
 
     private static void updateMember() {
-
-        // TODO: Replace with SQL
-
 
         System.out.println("Updating member information...");
         System.out.print("Enter member ID to update: ");
@@ -129,38 +129,35 @@ public class MemberMenu {
         System.out.println("Removing member...");
         System.out.print("Enter member ID to remove: ");
         int id = Utilities.getIntInput();
+        Member m = findMemberById(id);
 
-        // TODO: Replace with SQL
-        // Member m = findMemberById(id);
-        // if (m != null) {
-        //     memberList.remove(m);
-        //     System.out.println("Member removed successfully!");
-        // } else {
-        //     System.out.println("Member not found.");
-        // }
+        if (m != null) {
+            memberList.remove(m);
+            System.out.println("Member removed successfully!");
+        } else {
+            System.out.println("Member not found.");
+        }
     }
 
     private static void searchMember() {
         System.out.print("Enter member ID: ");
         int id = Utilities.getIntInput();
+        Member member = findMemberById(id);
 
-        // TODO: Replace with SQL
-        // Member member = findMemberById(id);
-        // if (member != null) {
-        //     System.out.println("\nMember Found!");
-        //     System.out.println(member);
-        // } else {
-        //     System.out.println("No member found with that ID.");
-        // }
+        if (member != null) {
+            System.out.println("\nMember Found!");
+            System.out.println(member);
+        } else {
+            System.out.println("No member found with that ID.");
+        }
     }
 
     private static Member findMemberById(int id) {
-        // TODO: Replace with SQL
-        // for (Member m : memberList) {
-        //     if (m.getId() == id) {
-        //         return m;
-        //     }
-        // }
+        for (Member m : memberList) {
+            if (m.getId() == id) {
+                return m;
+            }
+        }
         return null;
     }
 }
