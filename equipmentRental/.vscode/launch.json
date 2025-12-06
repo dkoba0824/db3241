@@ -6,6 +6,13 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",
+            "projectName": "equipmentRental_a24bcae2"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
             "projectName": "equipmentRental",
             "cwd": "${workspaceFolder}",
             "classPaths": [

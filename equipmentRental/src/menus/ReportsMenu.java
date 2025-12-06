@@ -39,8 +39,8 @@ public class ReportsMenu {
     }
     
     private static void reportRentingCheckouts() {
-        System.out.print("Enter Member ID: ");
-        int memberId = Utilities.getIntInput();
+        System.out.print("Enter Member ID (Format: \"USR#####\"): ");
+        String memberId = scanner.nextLine();
         String sql = "SELECT COUNT(*) AS Total_Rented FROM Rental WHERE User_ID = ?";
         Database.runQuery(sql, memberId);
     }
