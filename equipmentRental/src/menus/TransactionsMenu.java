@@ -37,7 +37,7 @@ public class TransactionsMenu {
 
     private static void updateCustomerEmail() {
         System.out.print("Enter User ID: ");
-        String userId = scanner.nextLine();
+        int userId = Utilities.getIntInput();
 
         System.out.print("Enter new email: ");
         String newEmail = scanner.nextLine();
@@ -50,7 +50,7 @@ public class TransactionsMenu {
             conn.setAutoCommit(false); 
 
             stmt.setString(1, newEmail);
-            stmt.setString(2, userId);
+            stmt.setString(2, String.format("USR%05d", userId));
 
             int rowsUpdated = stmt.executeUpdate();
 
@@ -69,7 +69,7 @@ public class TransactionsMenu {
 
     private static void updateCustomerPhone() {
         System.out.print("Enter User ID: ");
-        String userId = scanner.nextLine();
+        int userId = Utilities.getIntInput();
 
         System.out.print("Enter new phone number: ");
         String newPhone = scanner.nextLine();
@@ -82,7 +82,7 @@ public class TransactionsMenu {
             conn.setAutoCommit(false); 
 
             stmt.setString(1, newPhone);
-            stmt.setString(2, userId);
+            stmt.setString(2, String.format("USR%05d", userId));
 
             int rowsUpdated = stmt.executeUpdate();
 
@@ -99,30 +99,35 @@ public class TransactionsMenu {
         }
     }
     public static void addNewReview() {
-        try (Connection conn = Database.getConnection();
-            Scanner cin = new Scanner(System.in)) {
+        try (Connection conn = Database.getConnection()) {
 
             conn.setAutoCommit(false);
 
             // Ask user for review info
             System.out.print("Enter Review ID (unique): ");
-            String reviewID = cin.nextLine();
-            System.out.print("Enter Rating (integer 1-5): ");
-            int rating = Integer.parseInt(cin.nextLine());
-            System.out.print("Enter Comment: ");
-            String comment = cin.nextLine();
-            System.out.print("Enter User ID: ");
-            String userID = cin.nextLine();
-            System.out.print("Enter Equipment Serial: ");
-            String eqSerial = cin.nextLine();
+            int reviewID = Utilities.getIntInput();
 
-            String insertReviewSQL = "INSERT INTO REVIEWS (R_ID, Rating, Comment, User_ID, EQ_Serial) VALUES (?, ?, ?, ?, ?)";
+            System.out.print("Enter Rating (integer 1-5): ");
+            int rating = Utilities.getIntInput();
+
+            System.out.print("Enter Comment: ");
+            String comment = scanner.nextLine();
+
+            System.out.print("Enter User ID: ");
+            int userID = Utilities.getIntInput();
+
+            System.out.print("Enter Equipment Serial: ");
+            int eqSerial = Utilities.getIntInput();
+
+            String insertReviewSQL =
+                "INSERT INTO REVIEWS (R_ID, Rating, Comment, User_ID, EQ_Serial) VALUES (?, ?, ?, ?, ?)";
+
             PreparedStatement reviewStatement = conn.prepareStatement(insertReviewSQL);
-            reviewStatement.setString(1, reviewID);
+            reviewStatement.setString(1, String.format("REV%05d", reviewID));
             reviewStatement.setInt(2, rating);
             reviewStatement.setString(3, comment);
-            reviewStatement.setString(4, userID);
-            reviewStatement.setString(5, eqSerial);
+            reviewStatement.setString(4, String.format("USR%05d", userID));
+            reviewStatement.setString(5, String.format("EQ%05d", eqSerial));
 
             int rowsInserted = reviewStatement.executeUpdate();
 
@@ -133,9 +138,6 @@ public class TransactionsMenu {
                 conn.rollback();
                 System.out.println("Transaction rolled back. No review added.");
             }
-
-            conn.setAutoCommit(true);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

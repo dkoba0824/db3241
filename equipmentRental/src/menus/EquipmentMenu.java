@@ -102,9 +102,15 @@ public class EquipmentMenu {
         int quantity = Utilities.getIntInput();
         System.out.print("Enter updated equipment status: ");
         String status = scanner.nextLine();
+        System.out.print("Enter updated manufacturer ID (e.g., MFG001): ");
+        String manufacturerId = scanner.nextLine();
+        System.out.print("Enter updated order number: ");
+        String orderNumber = scanner.nextLine();
+        System.out.print("Enter updated warranty expiration date (YYYY-MM-DD): ");
+        String warrantyExp = scanner.nextLine();
 
-        String sql = "UPDATE EQUIPMENT SET Descrip = ?, Type = ?, Model = ?, Year = ?, Dimensions = ?, Weight = ?, Location = ?, Quantity = ?, Status = ? WHERE SerialNo = ?";
-        int rows = Database.executeUpdate(sql, description, type, model, year, dimensions, weight, location, quantity, status, String.format("EQ%05d", serial));
+        String sql = "UPDATE EQUIPMENT SET Descrip = ?, Type = ?, Model = ?, Year = ?, Dimensions = ?, Weight = ?, Location = ?, Quantity = ?, Status = ?, M_ID = ?, OrderNo = ?, Warranty_Exp = ? WHERE SerialNo = ?";
+        int rows = Database.executeUpdate(sql, description, type, model, year, dimensions, weight, location, quantity, status, manufacturerId, orderNumber, warrantyExp, String.format("EQ%05d", serial));
         if (rows > 0) {
             System.out.println("Equipment ID " + serial + " updated successfully!");
         } else {
