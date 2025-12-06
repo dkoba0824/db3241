@@ -7,6 +7,7 @@ import menus.MemberMenu;
 import menus.DroneMenu;
 import menus.RentalMenu;
 import menus.ReportsMenu;
+import menus.TransactionsMenu;
 
 import entities.Equipment;
 import entities.Member;
@@ -28,6 +29,7 @@ public class Main {
             System.out.println("3. Members");
             System.out.println("4. Rental and Delivery Options");
             System.out.println("5. Reports");
+            System.out.println("6. Transactions");
             System.out.println("0. Exit");
             System.out.print("Enter choice: ");
 
@@ -39,6 +41,7 @@ public class Main {
                 case 3 -> MemberMenu.memberMenu();
                 case 4 -> RentalMenu.rentalMenu();
                 case 5 -> ReportsMenu.reportsMenu();
+                case 6 -> TransactionsMenu.transactionsMenu();
                 case 0 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid choice. Please try again.");
             }
