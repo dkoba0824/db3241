@@ -116,7 +116,16 @@ public class EquipmentMenu {
         System.out.println("Removing equipment...");
         System.out.print("Enter serial number to remove: ");
         int id = Utilities.getIntInput();
+
+        // Delete from HAS_RENTAL table (foreign key)
+        String sqlHasRental = "DELETE FROM HAS_RENTAL WHERE SerialNo = ?";
+        Database.executeUpdate(sqlHasRental, String.format("EQ%05d", id));
         
+        // Delete from DRONE_DELIVERS table (foreign key)
+        String sqlDroneDelivers = "DELETE FROM DRONE_DELIVERS WHERE SerialNo = ?";
+        Database.executeUpdate(sqlDroneDelivers, String.format("EQ%05d", id));
+        
+        // Delete from EQUIPMENT table
         String sql = "DELETE FROM EQUIPMENT WHERE SerialNo = ?";
         int rows = Database.executeUpdate(sql, String.format("EQ%05d", id));
         
