@@ -15,4 +15,13 @@ public class Utilities {
             }
         }
     }
+
+    public static double getDoubleInput() {
+        try {
+            return Double.parseDouble(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            return -1;
+        }
+    }
 }
